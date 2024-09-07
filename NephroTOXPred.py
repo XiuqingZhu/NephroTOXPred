@@ -88,6 +88,9 @@ if st.button("Predict"):
     explainer = shap.TreeExplainer(model)    
     shap_values = explainer.shap_values(pd.DataFrame([feature_vector], columns=feature_names))
 
-    shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_vector], columns=feature_names), matplotlib=True)    
+    # force_plot 的调用
+    shap.force_plot(explainer.expected_value, shap_values, pd.DataFrame([feature_vector], columns=feature_names), matplotlib=True)
+
+    # 保存并显示图像
     plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
     st.image("./shap_force_plot.png")
