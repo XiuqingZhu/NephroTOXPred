@@ -87,15 +87,26 @@ if st.button("Predict"):
     # Calculate SHAP values and display force plot    
     explainer = shap.TreeExplainer(model)  
     shap_values = explainer.shap_values(pd.DataFrame([feature_vector], columns=feature_names))
-    expected_value = explainer.expected_value[0]
+
+    # Choose the index of the output you want to visualize
+    output_index = 0  # Adjust this index based on your specific needs
+
+    # Force plot for the specified output
+    expected_value = explainer.expected_value[output_index]
 
     positive_color = "#FF8C69"
     negative_color = "#B23AEE"
 
-    # force_plot 的调用
-    shap.force_plot(expected_value, shap_values, feature_names=pd.DataFrame([feature_vector], columns=feature_names).columns, 
-                    matplotlib=True, show=True, plot_cmap=[positive_color, negative_color])
+    # Generate the force plot for the specified output
+    shap.force_plot(
+        expected_value,
+        shap_values[output_index],
+        feature_names=pd.DataFrame([feature_vector], columns=feature_names).columns,
+        matplotlib=True,
+        show=True,
+        plot_cmap=[positive_color, negative_color]
+    )
 
-    # 保存并显示图像
+    # Save and display the image
     plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
     st.image("./shap_force_plot.png")
