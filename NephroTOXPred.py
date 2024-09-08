@@ -135,6 +135,5 @@ if st.button("Predict"):
 
         # Save the waterfall plot as an image
         plt.savefig("./shap_waterfall_plot.png", bbox_inches='tight', dpi=1200)
-        plt.close()  # 关闭当前图形
         # Display the waterfall plot image
         st.image("./shap_waterfall_plot.png")
