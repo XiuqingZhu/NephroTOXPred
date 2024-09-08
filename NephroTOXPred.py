@@ -6,6 +6,7 @@ import shap
 import os
 from rdkit import Chem
 from rdkit.Chem import AllChem, MACCSkeys
+import matplotlib.pyplot as plt
 
 def get_fingerprints(smiles):
     # 解析 SMILES
