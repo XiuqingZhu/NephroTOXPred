@@ -39,7 +39,7 @@ def generate_feature_vector(smiles, feature_order):
 # add logo
 st.image("./logo.png")
 
-st.write("Supported by Zhu's ai-drug service. If you have questions, please contact me at 2018760376@gzhmu.edu.cn, The affilated brain hospital, Guangzhou Medical university. ")
+st.write("Supported by Zhu's ai-drug service from the affiliated brain hospital, guangzhou medical university. If you have questions, please contact me at 2018760376@gzhmu.edu.cn.")
 
 # Define feature names
 feature_df = pd.read_csv('./features_for_ML.csv')
