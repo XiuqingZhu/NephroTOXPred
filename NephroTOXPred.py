@@ -5,7 +5,7 @@ import pandas as pd
 import shap
 from rdkit import Chem
 from rdkit.Chem import AllChem, MACCSkeys
-from rdkit.Chem import Draw
+from PIL import Image
 import matplotlib.pyplot as plt
 
 def get_fingerprints(smiles):
@@ -64,8 +64,10 @@ if st.button("Predict"):
         features = np.array([feature_vector])
 
         # Create molecular image
-        mol = Chem.MolFromSmiles(smiles)
-        img = Draw.MolToImage(mol)
+        img_path = './molecule.png'
+        Draw.MolToFile(mol, img_path)
+
+        img = Image.open(img_path)
         st.write("**The structure of this compound.**")
         st.image(img, caption='Molecular Structure')
 
