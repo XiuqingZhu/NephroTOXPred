@@ -6,9 +6,6 @@ import shap
 import os
 from rdkit import Chem
 from rdkit.Chem import AllChem, MACCSkeys
-import matplotlib.pyplot as plt
-import inspect
-import shap.plots._waterfall
 
 def get_fingerprints(smiles):
     # 解析 SMILES
@@ -127,26 +124,8 @@ if st.button("Predict"):
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
         st.image("./shap_force_plot.png")
 
-        # Generate and display SHAP waterfall plot
+        # Display features of this compound
         st.write("---")
-        st.write("**The SHAP Waterfall plot of this compound:**")
-
-        if os.path.exists("./shap_waterfall_plot.png"):
-            os.remove("./shap_waterfall_plot.png")
-
-        # Calculate SHAP values
-        source = inspect.getsource(shap.plots._waterfall)
-        new_source = source.replace("as pl", "as plt")
-        exec(new_source, shap.plots._waterfall.__dict__)
-        explainer_waterfall = shap.Explainer(model) 
-        shap_values_waterfall = explainer_waterfall(pd.DataFrame([feature_vector], columns=feature_names))
-
-        # Create waterfall plot
-        shap.plots.waterfall(
-            shap_values_waterfall[0]
-         )
-
-        # Save the waterfall plot as an image
-        plt.savefig("./shap_waterfall_plot.png", bbox_inches='tight', dpi=1200)
-        # Display the waterfall plot image
-        st.image("./shap_waterfall_plot.png")
+        st.write("**The molecular fingerprints of this compound:**")
+        important_features = [feature_names[i] for i, value in enumerate(feature_vector) if value == 1]
+        st.write(important_features)
