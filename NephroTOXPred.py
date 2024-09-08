@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import shap
 from rdkit import Chem
+from rdkit.Chem import Draw
 from rdkit.Chem import AllChem, MACCSkeys
 import matplotlib.pyplot as plt
 
