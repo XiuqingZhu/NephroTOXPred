@@ -131,9 +131,6 @@ if st.button("Predict"):
         st.write("---")
         st.write("**The SHAP Waterfall plot of this compound:**")
 
-        explainer_waterfall = shap.Explainer(model, pd.DataFrame([feature_vector], columns=feature_names))
-        shap_values_waterfall = explainer_waterfall(pd.DataFrame([feature_vector], columns=feature_names))
-
         # Create waterfall plot
         shap.waterfall_plot(
             shap_values[output_index]
