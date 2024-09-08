@@ -90,6 +90,10 @@ if st.button("Predict"):
 
         st.write(advice)
 
+        # Display a separator line
+        st.write("---") 
+        st.write("**The generated SHAP force plot of this compound:**")
+
        # 删除旧的 SHAP force plot 图片文件（如果存在）
         if os.path.exists("./shap_force_plot.png"):
             os.remove("./shap_force_plot.png")
@@ -121,19 +125,18 @@ if st.button("Predict"):
 
         # Save and display the image
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
-        # Display a separator line
-        st.write("---") 
-        st.write("**The generated SHAP force plot of this compound:**")
         st.image("./shap_force_plot.png")
 
         # Generate and display SHAP waterfall plot
         st.write("---")
         st.write("**The SHAP Waterfall plot of this compound:**")
 
+        explainer_waterfall = shap.Explainer(model, pd.DataFrame([feature_vector], columns=feature_names))
+        shap_values_waterfall = explainer(pd.DataFrame([feature_vector], columns=feature_names))
+
         # Create waterfall plot
         shap.waterfall_plot(
-            explainer.shap_values(pd.DataFrame([feature_vector], columns=feature_names))[output_index],
-            feature_names=pd.DataFrame([feature_vector], columns=feature_names).columns.tolist()
+            shap_values[output_index]
          )
 
         # Save the waterfall plot as an image
