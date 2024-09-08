@@ -131,9 +131,13 @@ if st.button("Predict"):
         st.write("---")
         st.write("**The SHAP Waterfall plot of this compound:**")
 
+        # Calculate SHAP values
+        explainer_waterfall = shap.TreeExplainer(model,pd.DataFrame([feature_vector], columns=feature_names)) 
+        shap_values_waterfall = explainer_waterfall(pd.DataFrame([feature_vector], columns=feature_names))
+
         # Create waterfall plot
         shap.waterfall_plot(
-            shap_values[output_index]
+            shap_values_waterfall[output_index]
          )
 
         # Save the waterfall plot as an image
