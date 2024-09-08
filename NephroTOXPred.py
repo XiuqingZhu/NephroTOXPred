@@ -131,7 +131,11 @@ if st.button("Predict"):
         st.write("**The SHAP Waterfall plot of this compound:**")
 
         # Create waterfall plot
-        shap.waterfall_plot(explainer, shap_values[output_index], feature_names=pd.DataFrame([feature_vector], columns=feature_names).columns)
+        shap.waterfall_plot(
+            explainer,
+            shap_values[0],
+            feature_names=pd.DataFrame([feature_vector], columns=feature_names).columns.tolist()
+        )
 
         # Save the waterfall plot as an image
         plt.savefig("./shap_waterfall_plot.png", bbox_inches='tight', dpi=1200)
