@@ -5,9 +5,6 @@ import pandas as pd
 import shap
 from rdkit import Chem
 from rdkit.Chem import AllChem, MACCSkeys
-from PIL import Image
-from rdkit.Chem.Draw import IPythonConsole
-from rdkit.Chem import Draw
 import matplotlib.pyplot as plt
 
 def get_fingerprints(smiles):
