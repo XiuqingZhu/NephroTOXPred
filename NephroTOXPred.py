@@ -138,7 +138,7 @@ if st.button("Predict"):
 
         # Create waterfall plot
         shap.waterfall_plot(
-            shap_values_waterfall[output_index]
+            explainer_waterfall.base_values[0], shap_values_waterfall[0], pd.DataFrame([feature_vector], columns=feature_names)[0]
          )
 
         # Save the waterfall plot as an image
