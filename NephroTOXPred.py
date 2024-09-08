@@ -133,7 +133,7 @@ if st.button("Predict"):
             os.remove("./shap_waterfall_plot.png")
 
         # Calculate SHAP values
-        explainer_waterfall = shap.Explainer(model) 
+        explainer_waterfall = shap.Explainer(model, pd.DataFrame([feature_vector], columns=feature_names)) 
         shap_values_waterfall = explainer_waterfall(pd.DataFrame([feature_vector], columns=feature_names))
 
         # Create waterfall plot
