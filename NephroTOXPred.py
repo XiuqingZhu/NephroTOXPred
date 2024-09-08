@@ -36,15 +36,20 @@ def generate_feature_vector(smiles, feature_order):
 
     return feature_vector
 
+# add logo
+st.image("./logo.png")
+st.write("---")
+st.write(f"**Supported by Zhu's aidrug service. **"
+         f"**If you have questions, please contact me at 2018760376@gzhmu.edu.cn **"
+         f"**The affilated brain hospital, Guangzhou Medical university. **"
+        )
+
 # Define feature names
 feature_df = pd.read_csv('./features_for_ML.csv')
 feature_names = feature_df['Features'].values.tolist()
 
 # Load the model
 model = joblib.load('./Model_final.joblib')
-
-# add logo
-st.image("./logo.png")
 
 # Streamlit user interface
 st.title("Nephrotoxic Component Predictor")
@@ -127,6 +132,6 @@ if st.button("Predict"):
 
         # Display features of this compound
         st.write("---")
-        st.write("**The molecular fingerprints of this compound:**")
+        st.write("**The molecular fingerprints of this compound (used in modeling):**")
         important_features = [feature_names[i] for i, value in enumerate(feature_vector) if value == 1]
         st.write(important_features)
