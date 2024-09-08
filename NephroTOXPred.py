@@ -42,6 +42,9 @@ feature_names = feature_df['Features'].values.tolist()
 # Load the model
 model = joblib.load('./Model_final.joblib')
 
+# add logo
+st.image("./logo.png")
+
 # Streamlit user interface
 st.title("Nephrotoxic Component Predictor")
 
