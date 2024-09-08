@@ -3,8 +3,8 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
+import os
 from rdkit import Chem
-from rdkit.Chem import Draw
 from rdkit.Chem import AllChem, MACCSkeys
 import matplotlib.pyplot as plt
 
@@ -62,19 +62,13 @@ if st.button("Predict"):
         st.write("**Invalid SMILES string. Please provide a correct SMILES notation.**")
     else:
         features = np.array([feature_vector])
-
-        # Create molecular image
-        img_path = './molecule.png'
-        Draw.MolToFile(mol, img_path)
-
-        img = Image.open(img_path)
-        st.write("**The structure of this compound.**")
-        st.image(img, caption='Molecular Structure')
-
+        
         # Predict class and probabilities
         predicted_class = model.predict(features)[0]
         predicted_proba = model.predict_proba(features)[0]
 
+        # Display a separator line
+        st.write("---") 
         # Display prediction results
         st.write(f"**Predicted Class:** {predicted_class}")
         st.write(f"**Prediction Probabilities:** {predicted_proba}")
@@ -95,6 +89,10 @@ if st.button("Predict"):
             )
 
         st.write(advice)
+
+       # 删除旧的 SHAP force plot 图片文件（如果存在）
+        if os.path.exists("./shap_force_plot.png"):
+            os.remove("./shap_force_plot.png")
 
         # Calculate SHAP values and display force plot    
         explainer = shap.TreeExplainer(model)  
@@ -121,6 +119,7 @@ if st.button("Predict"):
 
         # Save and display the image
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
-
+        # Display a separator line
+        st.write("---") 
         st.write("**The generated SHAP force plot of this compound.**")
         st.image("./shap_force_plot.png")
