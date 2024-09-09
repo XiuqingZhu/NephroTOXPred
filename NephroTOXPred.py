@@ -7,6 +7,16 @@ import os
 from rdkit import Chem
 from rdkit.Chem import AllChem, MACCSkeys
 import matplotlib.pyplot as plt
+import time
+from PIL import Image
+
+@st.cache_data
+def load_image(image_path):
+    return Image.open(image_path)
+
+# Load and display the logo
+logo = load_image("./logo.png")
+st.image("./logo.png")
 
 def get_fingerprints(smiles):
     try:
@@ -25,7 +35,7 @@ def get_fingerprints(smiles):
 
         return maccs_bits, ecfp4_bits
     except Exception as e:
-        st.write("**Invalid SMILES string. Please provide a correct SMILES notation.**")
+        st.write("**Invalid SMILES string. Unable to perform subsequent calculations. **")
         return None, None
 
 def generate_feature_vector(smiles, feature_order):
@@ -43,9 +53,6 @@ def generate_feature_vector(smiles, feature_order):
             feature_vector.append(ecfp4_bits[index])
 
     return feature_vector
-
-# add logo
-st.image("./logo.png")
 
 st.write("Supported by the service of Zhu's AI-Drug Lab at the affiliated Brain Hospital, Guangzhou Medical University. If you have any questions, please contact me at 2018760376@gzhmu.edu.cn.")
 
@@ -69,7 +76,7 @@ if st.button("Predict"):
     feature_vector = generate_feature_vector(smiles, feature_names)
     
     if feature_vector is None:
-        st.write("**Invalid SMILES string. Please provide a correct SMILES notation.**")
+        st.write("**Please provide a correct SMILES notation. **")
     else:
         features = np.array([feature_vector])
         
@@ -104,7 +111,14 @@ if st.button("Predict"):
         st.write("---") 
         st.write("**The generated SHAP force plot of this compound:**")
 
-       # 删除旧的 SHAP force plot 图片文件（如果存在）
+        progress_bar = st.empty()
+        for i in range(10):
+             progress_bar.progress(i / 10, 'Progress')
+             time.sleep(0.5)
+        with st.spinner('Loading...'):
+             time.sleep(2)
+
+        # Delete old SHAP force plot image file (if it exists)
         if os.path.exists("./shap_force_plot.png"):
             os.remove("./shap_force_plot.png")
 
