@@ -129,6 +129,7 @@ if st.button("Predict"):
         # Display SHAP values for each feature
         st.write("**SHAP values for each feature:**")
         shap_df = pd.DataFrame(shap_values[0].T, columns=["SHAP value"], index=feature_names)
+        shap_df["Absolute SHAP value"] = shap_df["SHAP value"].abs()
         st.write(shap_df)
         
         # Choose the index of the output you want to visualize
@@ -154,6 +155,13 @@ if st.button("Predict"):
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
         st.image("./shap_force_plot.png")
 
+        progress_bar = st.empty()
+        for i in range(10):
+             progress_bar.progress(i / 10, 'Progress')
+             time.sleep(0.5)
+        with st.spinner('Loading...'):
+             time.sleep(2)
+        
         # Display features of this compound
         st.write("---")
         st.write("**The molecular fingerprints of this compound used in modeling:**")
