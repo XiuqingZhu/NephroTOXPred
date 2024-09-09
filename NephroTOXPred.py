@@ -9,23 +9,31 @@ from rdkit.Chem import AllChem, MACCSkeys
 import matplotlib.pyplot as plt
 
 def get_fingerprints(smiles):
-    # 解析 SMILES
-    mol = Chem.MolFromSmiles(smiles)
-    
-    # 计算 MACCS 指纹
-    maccs_fp = MACCSkeys.GenMACCSKeys(mol)
-    maccs_bits = np.array(maccs_fp, dtype=int).tolist()
+    try:
+        # Parse SMILES
+        mol = Chem.MolFromSmiles(smiles)
+        if mol is None:
+            raise ValueError("Invalid SMILES string")
+        
+        # Calculate MACCS fingerprints
+        maccs_fp = MACCSkeys.GenMACCSKeys(mol)
+        maccs_bits = np.array(maccs_fp, dtype=int).tolist()
 
-    # 计算 ECFP4 指纹
-    ecfp4_fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=1024)
-    ecfp4_bits = np.array(ecfp4_fp, dtype=int).tolist()
+        # Calculate ECFP4 fingerprints
+        ecfp4_fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=1024)
+        ecfp4_bits = np.array(ecfp4_fp, dtype=int).tolist()
 
-    return maccs_bits, ecfp4_bits
+        return maccs_bits, ecfp4_bits
+    except Exception as e:
+        st.write("**Invalid SMILES string. Please provide a correct SMILES notation.**")
+        return None, None
 
 def generate_feature_vector(smiles, feature_order):
     maccs_bits, ecfp4_bits = get_fingerprints(smiles)
-    feature_vector = []
+    if maccs_bits is None or ecfp4_bits is None:
+        return None
 
+    feature_vector = []
     for feature in feature_order:
         if feature.startswith("MACCS_"):
             index = int(feature.split("_")[1]) 
@@ -39,7 +47,7 @@ def generate_feature_vector(smiles, feature_order):
 # add logo
 st.image("./logo.png")
 
-st.write("Supported by Zhu's ai-drug service from the affiliated brain hospital, guangzhou medical university. If you have questions, please contact me at 2018760376@gzhmu.edu.cn.")
+st.write("Supported by the service of Zhu's AI-Drug Lab at the affiliated Brain Hospital, Guangzhou Medical University. If you have any questions, please contact me at 2018760376@gzhmu.edu.cn.")
 
 # Define feature names
 feature_df = pd.read_csv('./features_for_ML.csv')
@@ -104,6 +112,11 @@ if st.button("Predict"):
         explainer = shap.TreeExplainer(model)  
         shap_values = explainer.shap_values(pd.DataFrame([feature_vector], columns=feature_names))
 
+        # Display SHAP values for each feature
+        st.write("**SHAP values for each feature:**")
+        shap_df = pd.DataFrame(shap_values[0], index=feature_names, columns=["SHAP value"])
+        st.write(shap_df)
+
         # Choose the index of the output you want to visualize
         output_index = 0  # Adjust this index based on your specific needs
 
@@ -129,6 +142,6 @@ if st.button("Predict"):
 
         # Display features of this compound
         st.write("---")
-        st.write("**The molecular fingerprints of this compound (used in modeling):**")
+        st.write("**The molecular fingerprints of this compound used in modeling:**")
         important_features = [feature_names[i] for i, value in enumerate(feature_vector) if value == 1]
         st.write(important_features)
