@@ -128,9 +128,9 @@ if st.button("Predict"):
 
         # Display SHAP values for each feature
         st.write("**SHAP values for each feature:**")
-        shap_df = pd.DataFrame(shap_values[0], index=feature_names, columns=["SHAP value"])
+        shap_df = pd.DataFrame(shap_values[0], columns=["SHAP value"], index=feature_names)
         st.write(shap_df)
-
+        
         # Choose the index of the output you want to visualize
         output_index = 0  # Adjust this index based on your specific needs
 
