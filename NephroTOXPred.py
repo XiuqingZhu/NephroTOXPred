@@ -129,7 +129,6 @@ if st.button("Predict"):
 
         shap_df = pd.DataFrame(shap_values[0].T, columns=["SHAP value"], index=feature_names)
         shap_df["Absolute SHAP value"] = shap_df["SHAP value"].abs()
-        shap_df = shap_df.drop(shap_df.columns[-1], axis=1)
         st.write(shap_df)
        
         st.write("---") 
