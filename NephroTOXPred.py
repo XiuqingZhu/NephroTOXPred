@@ -54,6 +54,15 @@ def generate_feature_vector(smiles, feature_order):
 
     return feature_vector
 
+def run_progress():
+    progress_bar = st.empty()
+    for i in range(10):
+        progress_bar.progress(i / 10, 'Progress')
+        time.sleep(0.5)
+    with st.spinner('Loading...'):
+        time.sleep(2)
+    progress_bar.empty()
+
 st.write("Supported by the service of Zhu's AI-Drug Lab at the affiliated Brain Hospital, Guangzhou Medical University. If you have any questions, please contact me at 2018760376@gzhmu.edu.cn.")
 
 # Define feature names
@@ -109,29 +118,29 @@ if st.button("Predict"):
 
         # Display a separator line
         st.write("---") 
-        st.write("**The generated SHAP force plot of this compound:**")
-
-        progress_bar = st.empty()
-        for i in range(10):
-             progress_bar.progress(i / 10, 'Progress')
-             time.sleep(0.5)
-        with st.spinner('Loading...'):
-             time.sleep(2)
-
-        # Delete old SHAP force plot image file (if it exists)
-        if os.path.exists("./shap_force_plot.png"):
-            os.remove("./shap_force_plot.png")
+        # Display SHAP values for each feature
+        st.write("**SHAP values for each feature:**")
+        
+        run_progress()
 
         # Calculate SHAP values and display force plot    
         explainer = shap.TreeExplainer(model)  
         shap_values = explainer.shap_values(pd.DataFrame([feature_vector], columns=feature_names))
 
-        # Display SHAP values for each feature
-        st.write("**SHAP values for each feature:**")
         shap_df = pd.DataFrame(shap_values[0].T, columns=["SHAP value"], index=feature_names)
         shap_df["Absolute SHAP value"] = shap_df["SHAP value"].abs()
+        shap_df = shap_df.drop(shap_df.columns[-1], axis=1)
         st.write(shap_df)
+       
+        st.write("---") 
+        st.write("**The generated SHAP force plot of this compound:**")
         
+        run_progress()
+        
+        # Delete old SHAP force plot image file (if it exists)
+        if os.path.exists("./shap_force_plot.png"):
+            os.remove("./shap_force_plot.png")
+
         # Choose the index of the output you want to visualize
         output_index = 0  # Adjust this index based on your specific needs
 
@@ -140,7 +149,7 @@ if st.button("Predict"):
 
         positive_color = "#FF8C69"
         negative_color = "#B23AEE"
-
+            
         # Generate the force plot for the specified output
         shap.force_plot(
             expected_value,
@@ -155,12 +164,7 @@ if st.button("Predict"):
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
         st.image("./shap_force_plot.png")
 
-        progress_bar = st.empty()
-        for i in range(10):
-             progress_bar.progress(i / 10, 'Progress')
-             time.sleep(0.5)
-        with st.spinner('Loading...'):
-             time.sleep(2)
+        run_progress()
         
         # Display features of this compound
         st.write("---")
