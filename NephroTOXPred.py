@@ -140,11 +140,15 @@ if st.button("Predict"):
         # Choose the index of the output you want to visualize
         output_index = 0  # Adjust this index based on your specific needs
 
+        run_progress()
+
         # Force plot for the specified output
         expected_value = explainer.expected_value[output_index]
 
         positive_color = "#FF8C69"
         negative_color = "#B23AEE"
+
+        run_progress()
             
         # Generate the force plot for the specified output
         shap.force_plot(
