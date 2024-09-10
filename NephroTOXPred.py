@@ -130,9 +130,6 @@ if st.button("Predict"):
         shap_df = pd.DataFrame(shap_values[0].T, columns=["SHAP value"], index=feature_names)
         shap_df["Absolute SHAP value"] = shap_df["SHAP value"].abs()
         st.write(shap_df)
-       
-        st.write("---") 
-        st.write("**The generated SHAP force plot of this compound:**")
         
         run_progress()
         
@@ -159,9 +156,14 @@ if st.button("Predict"):
             plot_cmap=[positive_color, negative_color]
         )
         
-        run_progress()
         # Save and display the image
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
+
+        st.write("---") 
+        st.write("**The generated SHAP force plot of this compound:**")
+       
+        run_progress()
+        
         st.image("./shap_force_plot.png")
 
         run_progress()
