@@ -140,15 +140,11 @@ if st.button("Predict"):
         # Choose the index of the output you want to visualize
         output_index = 0  # Adjust this index based on your specific needs
 
-        run_progress()
-
         # Force plot for the specified output
         expected_value = explainer.expected_value[output_index]
 
         positive_color = "#FF8C69"
         negative_color = "#B23AEE"
-
-        run_progress()
             
         # Generate the force plot for the specified output
         shap.force_plot(
@@ -159,13 +155,9 @@ if st.button("Predict"):
             show=True,
             plot_cmap=[positive_color, negative_color]
         )
-
-        run_progress()
         
         # Save and display the image
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
-
-        run_progress()
 
         st.write("---") 
         st.write("**The generated SHAP force plot of this compound:**")
