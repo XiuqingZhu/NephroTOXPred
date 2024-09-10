@@ -78,7 +78,7 @@ st.title("Nephrotoxic Component Predictor")
 st.write("**Please enter a SMILE string for predicting nephrotoxic components.**")
 
 # Smiles: string input
-smiles = st.text_input("SMILE:", value="")
+smiles = st.text_input("SMILE:", value="For example, CCCCCO")
 
 if st.button("Predict"):
     # Generate feature vector
