@@ -169,6 +169,9 @@ if st.button("Predict"):
 
         st.write("---") 
         st.write("**The generated SHAP force plot of this compound:**")
+
+        run_progress()
+        
         st.image("./shap_force_plot.png")
 
         run_progress()
