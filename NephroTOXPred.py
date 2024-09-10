@@ -165,11 +165,10 @@ if st.button("Predict"):
         # Save and display the image
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
 
+        run_progress()
+
         st.write("---") 
         st.write("**The generated SHAP force plot of this compound:**")
-       
-        run_progress()
-        
         st.image("./shap_force_plot.png")
 
         run_progress()
