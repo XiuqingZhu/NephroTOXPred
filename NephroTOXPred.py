@@ -158,7 +158,8 @@ if st.button("Predict"):
             show=True,
             plot_cmap=[positive_color, negative_color]
         )
-
+        
+        run_progress()
         # Save and display the image
         plt.savefig("./shap_force_plot.png", bbox_inches='tight', dpi=1200)
         st.image("./shap_force_plot.png")
